@@ -1,10 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <set>
-
+#define min(a, b) (a) >= (b)? (b) : (a)
 typedef std::vector<std::vector<int>> Graph;
 
-void dsf(const Graph &graph, int node, bool *visited, std::vector<int> &result)
+void dfs(const Graph &graph, int node, bool *visited, std::vector<int> &result)
 {
 	result.push_back(node);
 	visited[node] = true;
@@ -12,7 +12,7 @@ void dsf(const Graph &graph, int node, bool *visited, std::vector<int> &result)
 	{
 		if (!visited[sub])
 		{
-			dsf(graph, sub, visited, result);
+			dfs(graph, sub, visited, result);
 			result.push_back(node);
 		}
 	}
@@ -37,22 +37,21 @@ int main()
 		visited[i] = false;
 
 	std::vector<int> result;
-	dsf(graph, 1, visited, result);
+	dfs(graph, 1, visited, result);
 
 	int size = result.size() / k;
 	int left = result.size() % k;
-	if (left > 0)
-		size++;
 
 	int total = result.size();
 	int index = 0;
-	if (result.size() != (2 * n - 1))
-		std::cout<<result.size();
 	for (int i = 0; i < k; i++)
 	{
 		int count = size;
-		if (i == (k - 1))
-			count = total - size * (k - 1);
+		if (left > 0)
+		{
+			count++;
+			left--;
+		}
 		std::cout<<count<<" ";
 		for (int i = 0; i < count; i++)
 		{
